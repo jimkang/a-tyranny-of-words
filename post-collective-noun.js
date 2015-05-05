@@ -5,6 +5,8 @@ var formatCollectiveNounSentence = require('./format-collective-noun-sentence');
 var getCollectiveNoun = require('./get-collective-noun');
 var createWordnok = require('wordnok').createWordnok;
 var async = require('async');
+var jsonfile = require('jsonfile');
+var probable = require('probable');
 
 var dryRun = false;
 if (process.argv.length > 2) {
@@ -12,12 +14,16 @@ if (process.argv.length > 2) {
 }
 
 var twit = new Twit(config.twitter);
+
 var wordnok = createWordnok({
   apiKey: config.wordnikAPIKey,
   logger: {
     log: function noOp() {}
   }
 });
+
+var templates = jsonfile.readFileSync(__dirname + '/data/templates.json');
+
 
 async.waterfall(
   [
@@ -40,7 +46,7 @@ function getOptsForCollectiveNoun(noun, done) {
 function makeSentenceWithCollectiveInfo(collectiveInfo, done) {
   var formatted = formatCollectiveNounSentence({
     collectiveNounInfo: collectiveInfo,
-    template: 'The collective noun for @#$%_s is "@#$%_c"; many @#$%_p are called a "@#$%_c".'
+    template: probable.pickFromArray(templates)
   });
   callBackOnNextTick(done, null, formatted);
 }
