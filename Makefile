@@ -4,6 +4,7 @@ PM2 = $(HOMEDIR)/node_modules/pm2/bin/pm2
 
 test:
 	node tests/format-collective-noun-sentence-tests.js
+	node tests/prefix-with-article-tests.js
 	node tests/get-collective-noun-tests.js
 
 run:

@@ -8,14 +8,18 @@ test('Template', function templateTest(t) {
     collectiveNounInfo: {
       singular: 'cherry',
       plural: 'cherries',
-      collective: 'bowlful'
+      collective: 'bowlful',
+      collectiveWithArticle: 'a bowlful',
+      collectiveWithArticleCapitalized: 'A bowlful',
     },
-    template: 'The collective noun for @#$%_s is "@#$%_c"; many @#$%_p are called a "@#$%_c".'
+    template: 'The collective noun for @#$%_s is "@#$%_c"; ' +
+      'many @#$%_p are called @#$%_a-c. @#$%_A-c of @#$%_p.'
   });
 
   t.equal(
     formatted,
-    'The collective noun for cherry is "bowlful"; many cherries are called a "bowlful".',
+    'The collective noun for cherry is "bowlful"; ' +
+    'many cherries are called a bowlful. A bowlful of cherries.',
     'All placeholders are replaced correctly.'
   );
 });
