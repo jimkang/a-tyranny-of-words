@@ -22,12 +22,18 @@ test('Vowel', function vowel(t) {
   );
 });
 
-test('Tricky vowel', function trickyVowel(t) {
-  t.plan(1);
+test('Tricky vowels', function trickyVowels(t) {
+  t.plan(2);
 
   t.equal(
     prefixWithArticle('euphemism'),
     'a euphemism',
+    'Uses correct article for word starting with a vowel that sounds like a consonant.'
+  );
+
+  t.equal(
+    prefixWithArticle('one'),
+    'a one',
     'Uses correct article for word starting with a vowel that sounds like a consonant.'
   );
 });

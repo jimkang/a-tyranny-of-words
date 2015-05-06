@@ -19,7 +19,8 @@ function startsWithVowel(word) {
   var firstLetter = lowercased.charAt(0);
 
   if (['a', 'e', 'i', 'o', 'u'].indexOf(firstLetter) !== -1 &&
-    word.substr(0, 2) !== 'eu') {
+    lowercased.substr(0, 2) !== 'eu' &&
+    lowercased.substr(0, 3) !== 'one') {
 
     finding = true;
   }
