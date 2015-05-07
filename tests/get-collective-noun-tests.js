@@ -17,8 +17,8 @@ test('Basic test', function basicTest(t) {
     t.ok(!error, 'Does not return an error.');
     t.equal(collectiveNounPack.singular, 'cherry');
     t.equal(collectiveNounPack.plural, 'cherries');
-    t.equal(collectiveNounPack.collective, 'bowlful');
-    t.equal(collectiveNounPack.collectiveWithArticle, 'a bowlful');
-    t.equal(collectiveNounPack.collectiveWithArticleCapitalized, 'A bowlful');
+    t.equal(collectiveNounPack.collective, 'bowl');
+    t.equal(collectiveNounPack.collectiveWithArticle, 'a bowl');
+    t.equal(collectiveNounPack.collectiveWithArticleCapitalized, 'A bowl');
   }
 });
