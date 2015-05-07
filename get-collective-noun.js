@@ -18,6 +18,11 @@ function getRandomCollectiveNoun(opts, done) {
       var ranks = Object.keys(collectiveNounsByRank).map(strToNumber).sort(desc);
       var forms = canonicalizer.getSingularAndPluralForms(opts.noun);
       // TODO: Pick a result that's not already used.
+      console.log(
+        'Potential collective nouns by rank:',
+        JSON.stringify(collectiveNounsByRank, null, '  ')
+      );
+
       var collectiveNoun = collectiveNounsByRank[ranks[0]];
       var collectiveWithArticle = prefixWithArticle(collectiveNoun);
       var collectiveWithArticleCapitalized =
