@@ -22,3 +22,6 @@ post-receive: sync-worktree-to-git npm-install
 
 pushall:
 	git push origin master && git push server master
+
+update-collectivizer:
+	npm update --save collectivizer && git commit -a -m"Updated collectivizer" && make pushall
