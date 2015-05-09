@@ -2,28 +2,46 @@ var config = require('./config');
 var createCollectivizer = require('collectivizer');
 var canonicalizer = require('canonicalizer');
 var prefixWithArticle = require('./prefix-with-article');
+var sortRankKeys = require('./sort-rank-keys');
+var pickFirstUnusedCollectiveNoun = require('./pick-first-unused-collective-noun');
 
 var collectivizer = createCollectivizer({
   wordnikAPIKey: config.wordnikAPIKey
 });
 
-function getRandomCollectiveNoun(opts, done) {
-  collectivizer.collectivize(opts.noun, pickFromResults);
+function getCollectiveNoun(opts, done) {
+  var usedCollectivesDb;
+  var noun;
+
+  if (opts) {
+    usedCollectivesDb = opts.usedCollectivesDb;
+    noun = opts.noun;
+  }
+
+  collectivizer.collectivize(noun, pickFromResults);
 
   function pickFromResults(error, collectiveNounsByRank) {
     if (error) {
       done(error);
     }
     else {
-      var ranks = Object.keys(collectiveNounsByRank).map(strToNumber).sort(desc);
-      var forms = canonicalizer.getSingularAndPluralForms(opts.noun);
-      // TODO: Pick a result that's not already used.
       console.log(
         'Potential collective nouns by rank:',
         JSON.stringify(collectiveNounsByRank, null, '  ')
       );
 
-      var collectiveNoun = collectiveNounsByRank[ranks[0]];
+      pickFirstUnusedCollectiveNoun(
+        usedCollectivesDb, collectiveNounsByRank, packageResult
+      );
+    }
+  }
+
+  function packageResult(error, collectiveNoun) {
+    if (error) {
+      done(error);
+    }
+    else {
+      var forms = canonicalizer.getSingularAndPluralForms(noun);
       var collectiveWithArticle = prefixWithArticle(collectiveNoun);
       var collectiveWithArticleCapitalized =
         capitalizeFirstLetter(collectiveWithArticle);
@@ -35,17 +53,17 @@ function getRandomCollectiveNoun(opts, done) {
         collectiveWithArticle: prefixWithArticle(collectiveNoun),
         collectiveWithArticleCapitalized: collectiveWithArticleCapitalized
       };
-      done(error, result);
+
+      usedCollectivesDb.put(collectiveNoun, forms[0], saveDone);
+
+      function saveDone(error) {
+        if (!error) {
+          console.log('Saved collective noun', collectiveNoun, 'for', forms[0]);
+        }
+        done(error, result);
+      }
     }
   }
-}
-
-function strToNumber(s) {
-  return +s;
-}
-
-function desc(a, b) {
-  return a < b ? 1 : -1;
 }
 
 function capitalizeFirstLetter(phrase) {
@@ -56,4 +74,4 @@ function capitalizeFirstLetter(phrase) {
   return capitalized;
 }
 
-module.exports = getRandomCollectiveNoun;
+module.exports = getCollectiveNoun;

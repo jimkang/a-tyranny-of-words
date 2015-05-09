@@ -5,7 +5,10 @@ PM2 = $(HOMEDIR)/node_modules/pm2/bin/pm2
 test:
 	node tests/format-collective-noun-sentence-tests.js
 	node tests/prefix-with-article-tests.js
-	node tests/get-collective-noun-tests.js
+	node tests/pick-first-unused-collective-noun-tests.js
+
+test-integration:
+	node tests/integration/get-collective-noun-tests.js
 
 run:
 	node post-collective-noun.js

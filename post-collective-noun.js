@@ -7,6 +7,7 @@ var createWordnok = require('wordnok').createWordnok;
 var async = require('async');
 var jsonfile = require('jsonfile');
 var probable = require('probable');
+var level = require('level');
 
 var dryRun = false;
 if (process.argv.length > 2) {
@@ -24,6 +25,7 @@ var wordnok = createWordnok({
 
 var templates = jsonfile.readFileSync(__dirname + '/data/templates.json');
 
+var usedCollectivesDb = level(__dirname + '/data/used.db');
 
 async.waterfall(
   [
@@ -38,7 +40,8 @@ async.waterfall(
 
 function getOptsForCollectiveNoun(noun, done) {  
   var opts = {
-    noun: noun
+    noun: noun,
+    usedCollectivesDb: usedCollectivesDb
   };
   callBackOnNextTick(done, null, opts);
 }
