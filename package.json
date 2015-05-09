@@ -23,7 +23,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "canonicalizer": "^1.0.1",
-    "collectivizer": "^1.1.5",
+    "collectivizer": "^1.1.6",
     "conform-async": "^1.1.1",
     "jsonfile": "^2.0.0",
     "probable": "^1.5.0",
