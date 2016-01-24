@@ -23,7 +23,7 @@ var wordnok = createWordnok({
   }
 });
 
-var templates = jsonfile.readFileSync(__dirname + '/data/templates.json');
+var templates = jsonfile.readFileSync(__dirname + '/templates.json');
 
 var usedCollectivesDb = level(__dirname + '/data/used.db');
 
