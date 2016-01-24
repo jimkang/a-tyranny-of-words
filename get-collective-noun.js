@@ -1,4 +1,4 @@
-var config = require('./config');
+var config = require('./config/config');
 var createCollectivizer = require('collectivizer');
 var canonicalizer = require('canonicalizer');
 var prefixWithArticle = require('./prefix-with-article');

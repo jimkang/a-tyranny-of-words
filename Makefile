@@ -1,6 +1,4 @@
 HOMEDIR = $(shell pwd)
-GITDIR = /var/repos/a-tyranny-of-words.git
-PM2 = $(HOMEDIR)/node_modules/pm2/bin/pm2
 
 test:
 	node tests/format-collective-noun-sentence-tests.js
@@ -13,18 +11,31 @@ test-integration:
 run:
 	node post-collective-noun.js
 
-sync-worktree-to-git:
-	git --work-tree=$(HOMEDIR) --git-dir=$(GITDIR) checkout -f
-
-npm-install:
-	cd $(HOMEDIR)
-	npm install
-	npm prune
-
-post-receive: sync-worktree-to-git npm-install
-
-pushall:
-	git push origin master && git push server master
-
 update-collectivizer:
 	npm update --save collectivizer && git commit -a -m"Updated collectivizer" && make pushall
+
+create-docker-machine:
+	docker-machine create --driver virtualbox dev
+
+stop-docker-machine:
+	docker-machine stop dev
+
+start-docker-machine:
+	docker-machine start dev
+
+# connect-to-docker-machine:
+	# eval "$(docker-machine env dev)"
+
+build-docker-image:
+	docker build -t jkang/a-tyranny-of-words .
+
+push-docker-image: build-docker-image
+	docker push jkang/a-tyranny-of-words
+
+run-docker-image:
+	docker run -v $(HOMEDIR)/config:/usr/src/app/config \
+		-v $(HOMEDIR)/data:/usr/src/app/data \
+		jkang/a-tyranny-of-words node post-collective-noun.js
+
+pushall: push-docker-image
+	git push origin master

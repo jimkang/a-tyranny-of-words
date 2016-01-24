@@ -1,4 +1,4 @@
-var config = require('./config');
+var config = require('./config/config');
 var callBackOnNextTick = require('conform-async').callBackOnNextTick;
 var Twit = require('twit');
 var formatCollectiveNounSentence = require('./format-collective-noun-sentence');

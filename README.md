@@ -8,7 +8,7 @@ Installation
 
 Clone this repo.
 
-Then, create a `config.js` file in the project root that contains [Twitter API keys](https://apps.twitter.com/) and [Wordnik API key](http://developer.wordnik.com/). Example:
+Then, create a `config/config.js` file in the project root that contains [Twitter API keys](https://apps.twitter.com/) and [Wordnik API key](http://developer.wordnik.com/). Example:
 
     module.exports = {
       twitter: {
@@ -25,10 +25,15 @@ Usage
 
     make run
 
+Or via Docker:
+
+    make build-docker-image
+    make run-docker-image
+
 Tests
 -----
 
-Run tests with `make test`.
+Run tests with `make test`. Run integration tests with `make test-integration`.
 
 License
 -------

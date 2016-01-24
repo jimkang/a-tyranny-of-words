@@ -8,7 +8,7 @@ var level = require('level');
 test('Basic test', function basicTest(t) {
   t.plan(6);
 
-  rimraf.sync('test.db');
+  rimraf.sync('integration-test.db');
   var testDb = level('integration-test.db');
 
   var opts = {
@@ -22,8 +22,8 @@ test('Basic test', function basicTest(t) {
     t.ok(!error, 'Does not return an error.');
     t.equal(collectiveNounPack.singular, 'cherry');
     t.equal(collectiveNounPack.plural, 'cherries');
-    t.equal(collectiveNounPack.collective, 'bowl');
-    t.equal(collectiveNounPack.collectiveWithArticle, 'a bowl');
-    t.equal(collectiveNounPack.collectiveWithArticleCapitalized, 'A bowl');
+    t.equal(collectiveNounPack.collective, 'health');
+    t.equal(collectiveNounPack.collectiveWithArticle, 'a health');
+    t.equal(collectiveNounPack.collectiveWithArticleCapitalized, 'A health');
   }
 });
