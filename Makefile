@@ -1,4 +1,25 @@
 HOMEDIR = $(shell pwd)
+SERVER = smidgeo-headporters
+SSHCMD = ssh $(SMUSER)@$:(SERVER)
+PROJECTNAME = a-tyranny-of-words
+APPDIR = /var/apps/$(PROJECTNAME)
+
+# Many of these targets need the SMUSER environment to be defined, which should be the
+# username of the user on SERVER that has the permissions to execute these operations.
+
+pushall: sync
+	git push origin master
+
+sync:
+	rsync -a $(HOMEDIR) $(SMUSER)@smidgeo-headporters:/var/apps/ --exclude node_modules/ --exclude data/
+	ssh $(SMUSER)@smidgeo-headporters "cd /var/apps/$(PROJECTNAME) && npm install"
+
+set-permissions:
+	$(SSHCMD) "chmod 777 -R $(APPDIR)/data"
+
+update-remote: sync set-permissions
+
+HOMEDIR = $(shell pwd)
 
 test:
 	node tests/format-collective-noun-sentence-tests.js
@@ -8,34 +29,5 @@ test:
 test-integration:
 	node tests/integration/get-collective-noun-tests.js
 
-run:
-	node post-collective-noun.js
-
 update-collectivizer:
 	npm update --save collectivizer && git commit -a -m"Updated collectivizer" && make pushall
-
-create-docker-machine:
-	docker-machine create --driver virtualbox dev
-
-stop-docker-machine:
-	docker-machine stop dev
-
-start-docker-machine:
-	docker-machine start dev
-
-# connect-to-docker-machine:
-	# eval "$(docker-machine env dev)"
-
-build-docker-image:
-	docker build -t jkang/a-tyranny-of-words .
-
-push-docker-image: build-docker-image
-	docker push jkang/a-tyranny-of-words
-
-run-docker-image:
-	docker run -v $(HOMEDIR)/config:/usr/src/app/config \
-		-v $(HOMEDIR)/data:/usr/src/app/data \
-		jkang/a-tyranny-of-words node post-collective-noun.js
-
-pushall: push-docker-image
-	git push origin master
