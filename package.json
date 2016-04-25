@@ -26,7 +26,7 @@
     "collectivizer": "^1.1.6",
     "conform-async": "^1.1.1",
     "jsonfile": "^2.0.0",
-    "level": "^0.19.1",
+    "level": "^1.4.0",
     "probable": "^1.5.0",
     "rimraf": "^2.3.3",
     "twit": "^1.1.20",
