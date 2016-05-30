@@ -27,9 +27,9 @@
     "conform-async": "^1.1.1",
     "jsonfile": "^2.0.0",
     "level": "^1.4.0",
-    "probable": "^1.5.0",
+    "probable": "^2.0.1",
     "rimraf": "^2.3.3",
-    "twit": "^1.1.20",
+    "twit": "^2.2.4",
     "wordnok": "^3.2.0"
   }
 }

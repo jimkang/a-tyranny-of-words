@@ -1,23 +1,22 @@
-HOMEDIR = $(shell pwd)
-SMUSER = noderunner
-SERVER = sprigot-droplet
-SSHCMD = ssh $(SMUSER)@$(SERVER)
 PROJECTNAME = a-tyranny-of-words
-APPDIR = /var/www/$(PROJECTNAME)
+HOMEDIR = $(shell pwd)
+USER = bot
+PRIVUSER = root
+SERVER = smidgeo
+SSHCMD = ssh $(USER)@$(SERVER)
+APPDIR = /opt/$(PROJECTNAME)
 
-pushall: sync
+pushall: update-remote
 	git push origin master
 
 sync:
-	rsync -a $(HOMEDIR) $(SMUSER)@$(SERVER):/var/www/ --exclude node_modules/ --exclude data/
-	ssh $(SMUSER)@$(SERVER) "cd /var/www/$(PROJECTNAME) && npm install"
+	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt --exclude node_modules/ --exclude data/
+	$(SSHCMD) "cd $(APPDIR) && npm install"
 
 set-permissions:
 	$(SSHCMD) "chmod 777 -R $(APPDIR)/data"
 
 update-remote: sync set-permissions
-
-HOMEDIR = $(shell pwd)
 
 test:
 	node tests/format-collective-noun-sentence-tests.js
